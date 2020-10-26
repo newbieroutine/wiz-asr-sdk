@@ -1,4 +1,4 @@
-package com.wiz.asr.client.Protocol;
+package com.wiz.asr.client.protocol;
 
 import com.alibaba.fastjson.JSON;
 import com.wiz.asr.client.transport.ConnectionListener;
