@@ -23,9 +23,18 @@ public class SpeechRecognizer extends SpeechReqProtocol {
     protected long lastSendTime = -1L;
     private static final String DEFAULT_FORMAT = "pcm";
     private static final Integer DEFAULT_SAMPLE_RATE = 16000;
+    private String templateCode;
+
 
 
     public SpeechRecognizer(SpeechClient client, SpeechRecognizerListener listener) throws Exception {
+        Connection conn = client.connect(listener);
+        this.conn = conn;
+        this.afterConnection(listener);
+    }
+
+    public SpeechRecognizer(SpeechClient client, SpeechRecognizerListener listener, String templateCode) throws Exception {
+        this.templateCode = templateCode;
         Connection conn = client.connect(listener);
         this.conn = conn;
         this.afterConnection(listener);
