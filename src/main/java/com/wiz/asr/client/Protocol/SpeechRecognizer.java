@@ -23,6 +23,11 @@ public class SpeechRecognizer extends SpeechReqProtocol {
     protected long lastSendTime = -1L;
     private static final String DEFAULT_FORMAT = "pcm";
     private static final Integer DEFAULT_SAMPLE_RATE = 16000;
+
+    /**
+     * speechCode if need to change
+     * such as T_SSSSS$$$$14
+     */
     private String templateCode;
 
     /**
