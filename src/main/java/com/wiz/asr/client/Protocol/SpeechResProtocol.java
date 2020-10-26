@@ -1,4 +1,4 @@
-package com.wiz.asr.client.Protocol;
+package com.wiz.asr.client.protocol;
 
 import java.util.HashMap;
 import java.util.Map;

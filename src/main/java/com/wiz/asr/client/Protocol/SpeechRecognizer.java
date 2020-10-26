@@ -1,4 +1,4 @@
-package com.wiz.asr.client.Protocol;
+package com.wiz.asr.client.protocol;
 
 import com.wiz.asr.client.transport.Connection;
 import org.slf4j.Logger;
