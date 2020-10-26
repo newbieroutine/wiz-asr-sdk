@@ -25,6 +25,11 @@ public class SpeechRecognizer extends SpeechReqProtocol {
     private static final Integer DEFAULT_SAMPLE_RATE = 16000;
     private String templateCode;
 
+    /**
+     * the index of message
+     */
+    private int messageIndex = 0;
+
 
 
     public SpeechRecognizer(SpeechClient client, SpeechRecognizerListener listener) throws Exception {
