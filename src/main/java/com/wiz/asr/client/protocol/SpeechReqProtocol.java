@@ -1,12 +1,10 @@
 package com.wiz.asr.client.protocol;
 
 import com.alibaba.fastjson.JSON;
-import com.wiz.asr.client.IdGen;
 import com.wiz.asr.client.transport.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,60 +16,23 @@ import java.util.Map;
 public class SpeechReqProtocol {
 
     private static Logger logger = LoggerFactory.getLogger(SpeechReqProtocol.class);
-    protected String accessToken;
     protected Connection conn;
     protected String currentTaskId;
     protected SpeechReqProtocol.State state;
-    public Map<String, String> header;
-    public Map<String, Object> payload;
-    public Map<String, Object> context;
 
 
-    public String serialize() {
-        Map<String, Object> result = new HashMap();
-        result.put("header", this.header);
-        if (this.payload != null) {
-            result.put("payload", this.payload);
-            result.put("context", this.context);
-        }
-
-        return JSON.toJSONString(result);
+    public String serialize(Map<String, Object>map) {
+        return JSON.toJSONString(map);
     }
 
-    public String serializeWithContext() {
-        Map<String, Object> result = new HashMap();
-        result.put("header", this.header);
-        if (this.context != null) {
-            result.put("context", this.context);
-        }
 
-        if (this.payload != null) {
-            result.put("payload", this.payload);
-        }
-
-        return JSON.toJSONString(result);
-    }
 
     public void start() throws Exception {
-        this.state.checkStart();
-        Map<String, Long> network = new HashMap();
-        network.put("connect_cost", this.conn.getConnectingLatency());
-        network.put("upgrade_cost", this.conn.getWsHandshakeLatency());
-        this.putContext("network", network);
-        String taskId = IdGen.genId();
-        this.currentTaskId = taskId;
-        this.setTaskId(this.currentTaskId);
-        this.conn.sendText(this.serialize());
-        this.state = SpeechReqProtocol.State.STATE_REQUEST_SENT;
+
     }
 
-    public void putContext(String key, Object obj) {
-        this.context.put(key, obj);
-    }
 
-    protected void setTaskId(String requestId) {
-        this.header.put("task_id", requestId);
-    }
+
 
     public static enum State {
         STATE_FAIL(-1) {

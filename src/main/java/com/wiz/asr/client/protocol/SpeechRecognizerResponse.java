@@ -12,15 +12,8 @@ public class SpeechRecognizerResponse extends SpeechResProtocol {
     }
 
     public String getRecognizedText() {
-        return (String)this.payload.get("result");
+        return (String)this.getResult();
     }
 
-    public String getLexicalText() {
-        return (String)this.payload.get("lexical_result");
-    }
 
-    public Double getConfidence() {
-        Object o = this.payload.get("confidence");
-        return o != null ? Double.parseDouble(o.toString()) : null;
-    }
 }

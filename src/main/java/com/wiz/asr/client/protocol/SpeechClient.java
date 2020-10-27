@@ -51,5 +51,10 @@ public class SpeechClient {
         return null;
     }
 
-
+    /**
+     * Call this method at the end of the application to release resources
+     */
+    public void shutdown() {
+        client.shutdown();
+    }
 }

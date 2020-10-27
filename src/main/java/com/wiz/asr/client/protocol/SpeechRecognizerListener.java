@@ -1,11 +1,16 @@
 package com.wiz.asr.client.protocol;
 
 import com.alibaba.fastjson.JSON;
+import com.wiz.asr.client.enums.HttpStatusEnum;
+import com.wiz.asr.client.enums.ResponseTypeEnum;
 import com.wiz.asr.client.transport.ConnectionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * describe:
@@ -17,17 +22,22 @@ public abstract class SpeechRecognizerListener implements ConnectionListener {
 
     Logger logger = LoggerFactory.getLogger(SpeechRecognizerListener.class);
     protected SpeechRecognizer recognizer;
+    List<String> list = new ArrayList<String>();
+    String[] errStr = {HttpStatusEnum.ILLEGAL.getCode(),HttpStatusEnum.ILLEGAL_PARAM.getCode(),HttpStatusEnum.ILLEGAL_PARAM.getCode(),HttpStatusEnum.WIZ_INIT_ERROR.getCode(),
+            HttpStatusEnum.WIZ_RESULT_ERROR.getCode(),HttpStatusEnum.WIZ_FILE_ERROR.getCode()};
 
     public SpeechRecognizerListener() {
+        list = Arrays.asList(errStr);
     }
 
     public void setSpeechRecognizer(SpeechRecognizer recognizer) {
         this.recognizer = recognizer;
     }
 
-    public abstract void onRecognitionResultChanged(SpeechRecognizerResponse var1);
 
-    public abstract void onRecognitionCompleted(SpeechRecognizerResponse var1);
+    public abstract void onOpen(SpeechRecognizerResponse var1);
+
+    public abstract void onTranscriptionComplete(SpeechRecognizerResponse var1);
 
     public abstract void onStarted(SpeechRecognizerResponse var1);
 
@@ -52,13 +62,13 @@ public abstract class SpeechRecognizerListener implements ConnectionListener {
         if (message != null && message.trim().length() != 0) {
             this.logger.debug("on message:{}", message);
             SpeechRecognizerResponse response = (SpeechRecognizerResponse) JSON.parseObject(message, SpeechRecognizerResponse.class);
-            if (this.isRecReady(response)) {
+           if (this.isOpen(response)){
+               this.onOpen(response);
+           }else if (this.isRecReady(response)) {
                 this.onStarted(response);
                 this.recognizer.markReady();
-            } else if (this.isRecResult(response)) {
-                this.onRecognitionResultChanged(response);
             } else if (this.isRecComplete(response)) {
-                this.onRecognitionCompleted(response);
+                this.onTranscriptionComplete(response);
                 this.recognizer.markComplete();
             } else if (this.isTaskFailed(response)) {
                 this.onFail(response);
@@ -74,23 +84,24 @@ public abstract class SpeechRecognizerListener implements ConnectionListener {
     public void onMessage(ByteBuffer message) {
     }
 
-    private boolean isRecReady(SpeechRecognizerResponse response) {
-        String name = response.getName();
-        return name.equals("RecognitionStarted");
+    private boolean isOpen(SpeechRecognizerResponse response){
+        String name = response.getResponse();
+        return name.equals(ResponseTypeEnum.OPEN.getResponse());
     }
 
-    private boolean isRecResult(SpeechRecognizerResponse response) {
-        String name = response.getName();
-        return name.equals("RecognitionResultChanged");
+    private boolean isRecReady(SpeechRecognizerResponse response) {
+        String name = response.getResponse();
+        return name.equals(ResponseTypeEnum.START.getResponse());
     }
 
     private boolean isRecComplete(SpeechRecognizerResponse response) {
-        String name = response.getName();
-        return name.equals("RecognitionCompleted");
+        String name = response.getResponse();
+        return name.equals(ResponseTypeEnum.STOP.getResponse());
     }
 
     private boolean isTaskFailed(SpeechRecognizerResponse response) {
-        String name = response.getName();
-        return name.equals("TaskFailed");
+
+        String name = response.getCode();
+        return list.contains(name);
     }
 }

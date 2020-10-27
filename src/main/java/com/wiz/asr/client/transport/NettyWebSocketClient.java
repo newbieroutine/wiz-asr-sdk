@@ -78,9 +78,7 @@ public class NettyWebSocketClient {
 
     public Connection connect(String token, ConnectionListener listener, int connectionTimeout) throws Exception {
         this.bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTimeout);
-        HttpHeaders httpHeaders = new DefaultHttpHeaders();
-        httpHeaders.set("X-NLS-Token", token);
-        WebSocketClientHandshaker handshaker = WebSocketClientHandshakerFactory.newHandshaker(this.websocketURI, WebSocketVersion.V13, (String)null, true, httpHeaders, 196608);
+        WebSocketClientHandshaker handshaker = WebSocketClientHandshakerFactory.newHandshaker(this.websocketURI, WebSocketVersion.V13, (String)null, true, null, 196608);
         long start = System.currentTimeMillis();
         Channel channel = this.bootstrap.connect(this.websocketURI.getHost(), this.port).sync().channel();
         long connectingTime = System.currentTimeMillis() - start;

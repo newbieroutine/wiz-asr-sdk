@@ -11,41 +11,90 @@ import java.util.Map;
  */
 public class SpeechResProtocol {
 
-    public Map<String, Object> header = new HashMap();
-    public Map<String, Object> payload = new HashMap();
+    //电话id
+    private String callId;
+
+    //每句话标志
+    private Integer speechIndex;
+
+    //最终结果
+    private String result;
+
+    private String code;
+
+    private String msg;
+
+    private String response ;
+
+
 
     public SpeechResProtocol() {
     }
 
-    public String getNameSpace() {
-        return (String)this.header.get("namespace");
-    }
 
     public String getName() {
-        return (String)this.header.get("name");
+        return this.getResponse();
     }
 
     public int getStatus() {
-        return (Integer)this.header.get("status");
+        return  Integer.valueOf(this.getCode());
     }
 
     public String getStatusText() {
-        return (String)this.header.get("status_text");
+        return (String)this.getResult();
     }
 
     public String getTaskId() {
-        return (String)this.header.get("task_id");
+        return (String)this.getCallId();
     }
 
-    public String getString(String key) {
-        return (String)this.payload.get(key);
+
+
+    public String getCallId() {
+        return callId;
     }
 
-    public Integer getInt(String key) {
-        return (Integer)this.payload.get(key);
+    public void setCallId(String callId) {
+        this.callId = callId;
     }
 
-    public Object getObject(String key) {
-        return this.payload.get(key);
+    public Integer getSpeechIndex() {
+        return speechIndex;
+    }
+
+    public void setSpeechIndex(Integer speechIndex) {
+        this.speechIndex = speechIndex;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 }

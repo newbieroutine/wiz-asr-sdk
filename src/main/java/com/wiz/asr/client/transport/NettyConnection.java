@@ -52,6 +52,7 @@ public class NettyConnection implements Connection{
 
     @Override
     public void sendText(String payload) {
+        logger.info("asr sdk send text:{}",payload);
         if (this.channel != null && this.channel.isActive()) {
             logger.debug("thread:{},send:{}", Thread.currentThread().getId(), payload);
             TextWebSocketFrame frame = new TextWebSocketFrame(payload);
