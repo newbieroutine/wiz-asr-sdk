@@ -249,10 +249,7 @@ public class SpeechRecognizer extends SpeechReqProtocol {
         header.put("callId",currentTaskId);
         header.put("templateId",templateCode);
         header.put("language","0");
-        header.put("asrService","ali");
-        header.put("asrEnglishService","ali");
         header.put("nodeIndex",null);
-        header.put("asrIndonesiaService","google");
 
         map.put("header",header);
         return map;
