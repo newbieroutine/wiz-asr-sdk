@@ -32,7 +32,7 @@ public class SpeechRecognizer extends SpeechReqProtocol {
      * speechCode if need to change
      * such as T_SSSSS$$$$14
      */
-    private String templateCode="T_wbAuTAuqIH8B$$$10";
+    private String templateCode="T_pxh1IFfm3EyB$$$1";
 
     /**
      * the index of message
